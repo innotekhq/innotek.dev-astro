@@ -18,7 +18,7 @@ exports.handler = async function(event) {
     disclaimer: params.disclaimer as string,
   };
 
-  sendMessage(paramsObject);
+  await sendMessage(paramsObject);
 
   // redirect to https://main--clever-tapioca-642c60.netlify.app/contact?success=true
   return {
