@@ -158,6 +158,7 @@ export interface Testimonial {
 }
 
 export interface Input {
+  required?: boolean;
   type: HTMLInputTypeAttribute;
   name: string;
   label?: string;
@@ -166,6 +167,7 @@ export interface Input {
 }
 
 export interface Textarea {
+  required?: boolean;
   label?: string;
   placeholder?: string;
   rows?: number;
@@ -173,6 +175,7 @@ export interface Textarea {
 
 export interface Disclaimer {
   label?: string;
+  required?: boolean;
 }
 
 // COMPONENTS
@@ -204,6 +207,7 @@ export interface Form {
   disclaimer?: Disclaimer;
   button?: string;
   description?: string;
+  required?: boolean;
 }
 
 // WIDGETS

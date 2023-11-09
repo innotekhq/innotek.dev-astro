@@ -1,0 +1,42 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import Hero from '~/components/widgets/Hero.astro';
+
+const metadata = {
+  title: 'Web, Desktop and Browser plugin development Agency - Innotek',
+  ignoreTitleTemplate: true,
+  description: 'Innotek is a software development agency that specializes in web, desktop and browser plugin development, Autodesk Platform Service integrations, and identity providers. We are a dedicated team of engineers helping companies build and scale their products. Learn more!'
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Widget ******************* -->
+
+  <Hero
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Case Studies',
+        href: '/#case-studies',
+        target: '_blank',
+        icon: 'tabler:book',
+      },
+    ]}
+    image={{ src: 'https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?q=80&w=2217&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', alt: 'Macos opening Gmail' }}
+  >
+    <Fragment slot="title">
+      Success!
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Thank you for contacting us!
+      <span class="hidden sm:inline">
+        We received your message and will get back to you as soon as possible.
+      </span>
+      <span>
+        While you wait, check out our case studies to see all the amazing things we've done for our clients.
+      </span>
+    </Fragment>
+  </Hero>
+</Layout>
