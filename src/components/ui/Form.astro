@@ -4,7 +4,7 @@ import type { Form } from '~/types';
 const { inputs, textarea, disclaimer, button = 'Contact us', description = '', required = false } = Astro.props as Form;
 ---
 
-<form action="/.netlify/functions/contact" method="POST">
+<form name="contact" method="POST" data-netlify="true" action="/pages/success">
   {
     inputs &&
       inputs.map(
