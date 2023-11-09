@@ -8,8 +8,12 @@ exports.handler = async function(event, context) {
 
   console.log(params);
 
+  // redirect to https://main--clever-tapioca-642c60.netlify.app/contact?success=true
   return {
-    statusCode: 200,
-    body: JSON.stringify({ message: "Form data received" }),
-  };
+    statusCode: 302,
+    headers: {
+      Location: `https://main--clever-tapioca-642c60.netlify.app/contact?success=true`,
+    },
+    body: "",
+  }
 };
