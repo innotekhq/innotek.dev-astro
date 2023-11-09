@@ -8,13 +8,13 @@ import Features2 from '~/components/widgets/Features2.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Content from '~/components/widgets/Content.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
-import Stats from '~/components/widgets/Stats.astro';
+import LatestProjects from '~/components/widgets/LatestProjects.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'AstroWind — Free template for creating websites with Astro + Tailwind CSS',
+  title: 'Web, Desktop and Browser plugin development Agency - Innotek',
   ignoreTitleTemplate: true,
+  description: 'Innotek is a software development agency that specializes in web, desktop and browser plugin development, Autodesk Platform Service integrations, and identity providers. We are a dedicated team of engineers helping companies build and scale their products. Learn more!'
 };
 ---
 
@@ -25,28 +25,23 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Get template',
-        href: 'https://github.com/onwidget/astrowind',
+        text: 'Get started',
+        href: '/contact',
         target: '_blank',
-        icon: 'tabler:download',
+        icon: 'tabler:rocket',
       },
-      { text: 'Learn more', href: '#features' },
     ]}
-    image={{ src: '~/assets/images/hero.png', alt: 'AstroWind Hero Image' }}
+    image={{ src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', alt: 'AstroWind Hero Image' }}
   >
     <Fragment slot="title">
-      Free template for <span class="hidden xl:inline">creating websites with</span>
-      <span class="text-accent dark:text-white highlight"> Astro 3.0</span> + Tailwind CSS
+      Web<span class="hidden sm:inline">, Desktop</span> apps <span class="hidden sm:inline">and Browser Plugins</span> for <span class="text-accent dark:text-white highlight">Your Business</span>
     </Fragment>
 
     <Fragment slot="subtitle">
+      Build your next innovative desktop app, dynamic front end, or powerful browser plugin with Innotek.
       <span class="hidden sm:inline">
-        <span class="font-semibold">AstroWind</span> is a free, customizable and production-ready template for Astro 3.0
-        + Tailwind CSS.</span
-      >
-      <span class="block mb-1 sm:hidden font-bold text-blue-600">AstroWind: Production-ready.</span>
-       Suitable for Startups, Small Business, SaaS websites, Professional Portfolios, Marketing websites, Landing Pages
-      & Blogs.
+        We embrace simplicity as the foundation of scalability, ensuring your business evolves seamlessly with the digital landscape.
+      </span>
     </Fragment>
   </Hero>
 
@@ -58,44 +53,32 @@ const metadata = {
 
   <Features
     id="features"
-    tagline="Features"
-    title="What you get with AstroWind"
-    subtitle="One of the most professional and comprehensive templates currently on the market. Most starred & forked Astro theme in 2022."
+    tagline="Values"
+    title="Why choose us?"
+    subtitle="There are many offers out there, here’s what makes ours different:"
     items={[
       {
-        title: 'Astro + Tailwind CSS Integration',
+        title: 'Simple Solutions',
         description:
-          'A seamless integration between two great frameworks that offer high productivity, performance and versatility.',
+          'Achieving simplicity is hard. It takes time and effort to make things easy to use for your customers and easy to maintain and extend for your team. We are here to help you.',
         icon: 'tabler:brand-tailwind',
       },
       {
-        title: 'Ready-to-use Components',
+        title: 'Top-notch Codebase',
         description:
-          'Widgets made with Tailwind CSS ready to be used in Marketing Websites, SaaS, Blogs, Personal Profiles, Small Business...',
+          'What’s worse than a half baked solution? A codebase you have to throw away. We write clean, well documented code that is effortless to maintain and extend.',
         icon: 'tabler:components',
       },
       {
-        title: 'Best Practices',
+        title: 'Testing & Updates',
         description:
-          'Creating secure, efficient, and user-friendly websites that deliver exceptional experiences and lasting value.',
+          'We provide a full testing suite for all our projects. We do this to ensure our code keeps working in the future and when you change something you do it with confidence.',
         icon: 'tabler:list-check',
-      },
-      {
-        title: 'Excellent Page Speed',
-        description:
-          'Having a good page speed impacts organic search ranking, improves user experience (UI/UX) and increase conversion rates.',
-        icon: 'tabler:rocket',
-      },
-      {
-        title: 'Search Engine Optimization (SEO)',
-        description:
-          "SEO lies in its ability to enhance a website's visibility, driving organic traffic and enabling it to reach a wider audience.",
-        icon: 'tabler:arrows-right-left',
       },
       {
         title: 'Open to new ideas and contributions',
         description:
-          'Embracing a culture that is open to new ideas and contributions is integral fostering innovation, collaboration, and a dynamic user experience.',
+          'Embracing a culture that is open to new ideas and contributions is integral fostering innovation, collaboration, and a dynamic user experience. We work with you, not simply for you.',
         icon: 'tabler:bulb',
       },
     ]}
@@ -104,24 +87,25 @@ const metadata = {
   <!-- Content Widget **************** -->
 
   <Content
+    id="services"
     isReversed
-    tagline="Inside template"
-    title="AstroWind's Blueprint: Fun Meets Functionality!"
+    tagline="Expertise"
+    title="Here’s what we do best"
     items={[
       {
-        title: 'Built on top of Astro 3.0',
+        title: 'Built-in user Authentication and user Authentication',
         description:
-          'Benefiting from the performance and developer-friendly features of this modern static site generator.',
+          'Choose between self-hosted or cloud-hosted user authentication and authorization services, ensuring your users’ data is secure and protected. We help you set up, implement, and manage these services, so you can focus on what matters most. We know there are plenty of tools to do this, and we can help you choose the right one for your needs.',
       },
       {
-        title: 'Styled using Tailwind CSS',
+        title: '3rd Party API integration',
         description:
-          'Facilitating rapid design and consistent styling with this highly popular utility-first CSS framework.',
+          'We worked in different industries, including civil engineering (Autodesk Cloud Service), fintech, and gaming to integrate 3rd party APIs into their websites, ensuring seamless functionality and user experience.',
       },
       {
-        title: 'Cross-browser compatibility',
+        title: 'Modern tools and technologies',
         description:
-          'Ensure your website looks and functions consistently across various web browsers, delivering a seamless experience to all users.',
+          'We use the latest and greatest and make sure you aren’t stuck with outdated tools and technologies. We are always on the lookout for new and better ways to do things.',
       },
     ]}
     image={{
@@ -130,8 +114,7 @@ const metadata = {
     }}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Building on modern foundations</h3>
-       Gain a competitive advantage by incorporating industry leading practices
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">SaaS development</h3>
     </Fragment>
 
     <Fragment slot="bg">
@@ -145,23 +128,18 @@ const metadata = {
     isAfterContent
     items={[
       {
-        title: 'High level of customization',
-        description: `Tailor the template effortlessly to match your brand's identity and requirements, making your website distinct and saving you time.`,
+        title: 'OAuth integration',
+        description: `Let your customers use the same account to log in to your Web and Desktop apps with the help of OAuth.`,
       },
       {
-        title: 'Multiple layout possibilities',
+        title: 'Social Login',
         description:
-          'Explore various layout options to find the structure that best presents your content, enhancing user engagement and navigation.',
+          'We work with all major OAuth providers, including Google, Facebook, Twitter, GitHub, and many others. For customer authentication, authorization and management we use FusionAuth or your preferred provider.',
       },
       {
-        title: 'Fully responsive design',
+        title: 'Packaging, publishing, auto-updates',
         description:
-          "Ensure your website's optimal performance on various devices and screen sizes, providing a consistent and enjoyable user experience.",
-      },
-      {
-        title: 'Integration of media',
-        description:
-          'Seamlessly incorporate images, videos, and multimedia elements that enhance your content and engage visitors effectively.',
+          "Building is one thing, but delivering your app to your customers is another. We can help you package your app for Windows, macOS, and Linux, publish it to the app stores, and set up auto-updates so your customers always have the latest version.",
       },
     ]}
     image={{
@@ -169,7 +147,10 @@ const metadata = {
       alt: 'Blueprint Image',
     }}
   >
-    <Fragment slot="content">Ensure your online presence truly represents you.</Fragment>
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Desktop Apps</h3>
+      Built an app from scratch or connect it to your SaaS. We can help you with both.
+    </Fragment>
 
     <Fragment slot="bg">
       <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
@@ -185,56 +166,61 @@ const metadata = {
       {
         title: 'Enhanced user engagement',
         description:
-          'Captivate your audience with interactive elements, intuitive navigation, and visually appealing layouts, encouraging longer visits.',
-      },
-      {
-        title: 'Continuous improvement',
-        description:
-          'Ensure your website stays aligned with the latest trends and technologies through regular updates and enhancements.',
+          'Browser extensions are becoming increasingly popular. They provide a seamless way for your users to interact with your app without ever having to leave their favorite website or browser.',
       },
       {
         title: 'Time and resource efficiency',
         description:
-          'Skip the time-consuming process of building a website from scratch and launch your online presence sooner with AstroWind.',
+          'We build cross-platform browser extensions for Chrome, Edge, Firefox, Opera, Safari, and more.',
       },
       {
-        title: 'Community support',
-        description: `Join the growing AstroWind community for insights, resources, and assistance, ensuring you're never alone on your web development journey.`,
+        title: 'Publishing & Support',
+        description: `We can help you publish your extension to the Chrome Web Store, Firefox Add-ons, and other stores. We can also help you with support and maintenance.`,
       },
     ]}
     image={{
-      src: 'https://images.unsplash.com/photo-1611462985358-60d3498e0364?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      src: 'https://images.unsplash.com/photo-1655196601100-8bfb26cf99e9?q=80&w=2062&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       alt: 'Astronauts Image',
     }}
   >
-    <Fragment slot="content">Designed to foster growth and success.</Fragment>
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Browser Extensions</h3>
+      Empower your users browsing experience
+    </Fragment>
 
     <Fragment slot="bg">
       <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
     </Fragment>
   </Content>
 
+  <!-- Projects Widget -->
+  <LatestProjects
+    id="case-studies"
+    title="Explore Our Latest Case Studies"
+    information={`This is some of the work that both our clients and our team are most proud of.`}
+  />
+
   <!-- Steps Widget ****************** -->
 
   <Steps
-    title="Get your dream website up and running in no time with AstroWind."
+    title="Get your idea off the ground in 3 simple steps"
     items={[
       {
-        title: 'Step 1: <span class="font-medium">Download</span>',
+        title: 'Step 1: <span class="font-medium">Get in touch</span>',
         description:
-          "Kickstart with GitHub! Either fork the AstroWind template or simply click 'Use this template'. Your canvas awaits, ready for your digital masterpiece. In just a few clicks, you've already set the foundation.",
+          "Use the contact form and write us a message. We'll get back to you within 24 hours to discuss your project and how we can help you.",
         icon: 'tabler:package',
       },
       {
-        title: 'Step 2: <span class="font-medium">Add content</em>',
+        title: 'Step 2: <span class="font-medium">Create an outline</em>',
         description:
-          "Pour your vision into it. Add images, text, and all that jazz to breathe life into your digital space. Remember, it's the content that tells your story, so make it captivating.",
+          "We create a clearn and transparent outline of the project, including the scope, timeline, and budget. We'll also discuss the tools and technologies we'll use.",
         icon: 'tabler:letter-case',
       },
       {
-        title: 'Step 3: <span class="font-medium">Customize styles</span>',
+        title: 'Step 3: <span class="font-medium">Terms</span>',
         description:
-          'Give it your personal touch. Tailor colors, fonts, and layouts until it feels just right. Your unique flair, amplified by AstroWind! Precision in design ensures a seamless user experience.',
+          'We sign a contract and get to work. We keep you updated on the progress and make sure you are happy with the results.',
         icon: 'tabler:paint',
       },
       {
@@ -243,7 +229,7 @@ const metadata = {
       },
     ]}
     image={{
-      src: 'https://images.unsplash.com/photo-1616198814651-e71f960c3180?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
+      src: 'https://images.unsplash.com/photo-1596741964346-791466b552b6?q=80&w=2187&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       alt: 'Steps image',
     }}
   />
@@ -251,9 +237,9 @@ const metadata = {
   <!-- Features2 Widget ************** -->
 
   <Features2
-    title="Most used widgets"
-    subtitle="Provides frequently used components for building websites using Tailwind CSS"
-    tagline="Components"
+    title="Our Stack"
+    subtitle="This is most of the tech we use. We love simple, proven solutions that result in a software that is easy to maintain and extend."
+    tagline="Tech"
     items={[
       {
         title: 'Headers',
@@ -316,62 +302,7 @@ const metadata = {
 
   <BlogLatestPosts
     title="Find out more content in our Blog"
-    information={`The blog is used to display AstroWind documentation.
-                        Each new article will be an important step that you will need to know to be an expert in creating a website using Astro + Tailwind CSS.
-                        Astro is a very interesting technology. Thanks.
-                `}
-  />
-
-  <!-- FAQs Widget ******************* -->
-
-  <FAQs
-    title="Frequently Asked Questions"
-    subtitle="Dive into the following questions to gain insights into the powerful features that AstroWind offers and how it can elevate your web development journey."
-    tagline="FAQs"
-    classes={{ container: 'max-w-6xl' }}
-    items={[
-      {
-        title: 'Why AstroWind?',
-        description:
-          "Michael Knight a young loner on a crusade to champion the cause of the innocent. The helpless. The powerless in a world of criminals who operate above the law. Here he comes Here comes Speed Racer. He's a demon on wheels.",
-      },
-      {
-        title: 'What do I need to start?',
-        description:
-          'Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds. Many say exploration is part of our destiny, but it’s actually our duty to future generations.',
-      },
-      {
-        title: 'How to install the Astro + Tailwind CSS template?',
-        description:
-          "Well, the way they make shows is, they make one show. That show's called a pilot. Then they show that show to the people who make shows, and on the strength of that one show they decide if they're going to make more shows.",
-      },
-      {
-        title: "What's something that you don't understand?",
-        description:
-          "A flower in my garden, a mystery in my panties. Heart attack never stopped old Big Bear. I didn't even know we were calling him Big Bear.",
-      },
-      {
-        title: 'What is something that you would like to try again?',
-        description:
-          "A business big enough that it could be listed on the NASDAQ goes belly up. Disappears! It ceases to exist without me. No, you clearly don't know who you're talking to, so let me clue you in.",
-      },
-      {
-        title: 'If you could only ask one question to each person you meet, what would that question be?',
-        description:
-          "This is not about revenge. This is about justice. A lot of things can change in twelve years, Admiral. Well, that's certainly good to know. About four years. I got tired of hearing how young I looked.",
-      },
-    ]}
-  />
-
-  <!-- Stats Widget ****************** -->
-
-  <Stats
-    stats={[
-      { title: 'Downloads', amount: '132K' },
-      { title: 'Stars', amount: '24.8K' },
-      { title: 'Forks', amount: '10.3K' },
-      { title: 'Users', amount: '48.4K' },
-    ]}
+    information={`Innotek’s blog is built to educate fellow developers with tutorials, new and resources and other interested content related to Software Development 🧑‍🔧`}
   />
 
   <!-- CallToAction Widget *********** -->
@@ -380,20 +311,15 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Get template',
-        href: 'https://github.com/onwidget/astrowind',
+        text: 'Get started',
+        href: '/contact',
         target: '_blank',
-        icon: 'tabler:download',
+        icon: 'tabler:rocket',
       },
     ]}
   >
     <Fragment slot="title">
-      Astro&nbsp;+&nbsp;<br class="block sm:hidden" /><span class="sm:whitespace-nowrap">Tailwind CSS</span>
-    </Fragment>
-
-    <Fragment slot="subtitle">
-      Be very surprised by these huge fake numbers you are seeing on this page. <br class="hidden md:inline" />Don't
-      waste more time! :P
+      Want to work with us?
     </Fragment>
   </CallToAction>
 </Layout>

@@ -1,7 +1,21 @@
 ---
+import Image from '~/components/common/Image.astro';
 import { SITE } from '~/utils/config';
 ---
 
 <span class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:text-white">
-  🚀 {SITE?.name}
+  <Image
+        width={215}
+        height="0"
+        src="~/assets/images/logo-dark.svg"
+        alt="logo"
+        class="hidden h-[50px] dark:block"
+      />
+      <Image
+        width={215}
+        height="0"
+        src="~/assets/images/logo-light.svg"
+        alt="logo"
+        class="h-[50px] dark:hidden"
+      />
 </span>

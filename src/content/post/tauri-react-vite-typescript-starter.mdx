@@ -1,0 +1,162 @@
+---
+publishDate: 2023-07-19T00:00:00Z
+title: Crafting a Sleek Desktop Application with React, Tauri, Vite, and TypeScript
+excerpt: "In this guide, we'll walk through the process of creating a simple yet robust desktop application using a powerful stack: React, Tauri, Vite, and TypeScript."
+image: https://images.unsplash.com/photo-1493946740644-2d8a1f1a6aff?q=80&w=2090&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+category: Documentation
+tags:
+  - tauri
+  - react
+  - vite
+  - typescript
+metadata:
+  canonical: https://innotek.dev/tauri-react-vite-typescript-starter
+---
+
+import DListItem from '~/components/ui/DListItem.astro';
+import ToggleTheme from '~/components/common/ToggleTheme.astro';
+
+Welcome to the world of modern desktop application development! In this guide, we'll walk through the process of creating a simple yet robust desktop application using a powerful stack: React, Tauri, Vite, and TypeScript. We'll ensure our app is set up correctly from the get-go, including adjusting settings for packaging and distribution. Let’s dive in!
+
+### Prerequisites:
+- Node.js (LTS version)
+- Visual Studio Code or another IDE with TypeScript support
+- Basic knowledge of React and TypeScript
+
+### Step 1: Install Rust and Cargo
+Tauri is a framework for building desktop applications with web frontends that relies on Rust. Here’s how to install Rust and its package manager, Cargo:
+
+1. **Download and Install Rust:**
+   Visit the [Rust install page](https://www.rust-lang.org/tools/install) and follow the instructions for your operating system. On Unix-like OS, you can usually install Rust with the following command:
+
+   ```bash
+   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   ```
+
+   On Windows, download and run the `rustup-init.exe` from the same page.
+
+2. **Update Rust Toolchain:**
+   To ensure you're using the latest version, update the toolchain:
+
+   ```bash
+   rustup update
+   ```
+
+3. **Verify the Installation:**
+   Confirm that Rust and Cargo are installed:
+
+   ```bash
+   rustc --version
+   cargo --version
+   ```
+
+### Step 2: Scaffold the React + TypeScript Project with Vite
+Next, create a new React project using Vite and TypeScript:
+
+```bash
+npm create vite@latest my-tauri-app -- --template react-ts
+cd my-tauri-app
+```
+
+### Step 3: Install Project Dependencies
+Install the npm dependencies that come with the template:
+
+```bash
+npm install
+```
+
+### Step 4: Initialize Tauri
+Now, let's add Tauri to your project:
+
+```bash
+npm install @tauri-apps/cli
+npx tauri init
+```
+
+Ensure you are in the root directory of your React project.
+
+### Step 5: Configure Vite to Use Port 3000
+Modify Vite's configuration to use port 3000. In the `vite.config.ts` file:
+
+```typescript
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 3000,
+  },
+});
+```
+
+### Step 6: Develop Your React Component
+Edit the `src/App.tsx` file to create a simple React component using TypeScript:
+
+```tsx
+import React from 'react';
+
+const App: React.FC = () => {
+  return (
+    <div className="App">
+      <h1>Welcome to Innotek's React-Tauri App</h1>
+    </div>
+  );
+};
+
+export default App;
+```
+
+### Step 7: Run the Development Server
+To check your React app, start Vite's development server:
+
+```bash
+npm run dev
+```
+
+Your app will be available at `http://localhost:3000`.
+
+### Step 8: Configure Tauri Settings
+Before building and packaging the app, adjust Tauri's settings to suit our project's structure:
+
+1. **Set a Unique Bundle Identifier:**
+   Edit the `src-tauri/tauri.conf.json` file:
+
+   ```json
+   "tauri": {
+     "bundle": {
+       "identifier": "com.innotek.myapp"
+     },
+     // other configurations...
+   }
+   ```
+
+2. **Point to the Correct Dist Directory:**
+   Still in `tauri.conf.json`, update the build's dist directory to Vite's output:
+
+   ```json
+   "build": {
+     "distDir": "../dist"
+   },
+   ```
+
+### Step 9: Integrate React with Tauri
+Compile your React app and launch it within a Tauri window:
+
+```bash
+npm run build
+npx tauri dev
+```
+
+### Step 10: Package Your Application
+Finally, package your application into a distributable format:
+
+```bash
+npx tauri build
+```
+
+The output will be in `src-tauri/target/release/bundle/`.
+
+### Conclusion
+You've just created a sleek desktop application using React, Tauri, Vite, and TypeScript. By following these

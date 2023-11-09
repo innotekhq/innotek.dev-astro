@@ -25,6 +25,7 @@ export interface Post {
 
   /**  */
   category?: string;
+  rawCategory?: string;
   /**  */
   tags?: Array<string>;
   /**  */

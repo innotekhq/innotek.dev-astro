@@ -75,6 +75,7 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
     image: image,
 
     category: category,
+    rawCategory: rawCategory,
     tags: tags,
     author: author,
 
@@ -156,9 +157,17 @@ export const findPostsByIds = async (ids: Array<string>): Promise<Array<Post>> =
 /** */
 export const findLatestPosts = async ({ count }: { count?: number }): Promise<Array<Post>> => {
   const _count = count || 4;
-  const posts = await fetchPosts();
+  const allPosts = await fetchPosts();
+  const posts = allPosts.filter((post) => post.rawCategory !== 'Projects');
 
   return posts ? posts.slice(0, _count) : [];
+};
+
+export const findLatestProjects = async (): Promise<Array<Post>> => {
+  const allPosts = await load();
+  const projects = allPosts.filter((post) => post?.rawCategory === 'Projects');
+
+  return projects;
 };
 
 /** */
