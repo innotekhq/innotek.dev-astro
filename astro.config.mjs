@@ -40,6 +40,16 @@ export default defineConfig({
     icon({
       include: {
         tabler: ['*'],
+        'skill-icons': [
+          'react-dark',
+          'nextjs-dark',
+          'typescript',
+          'postgresql-dark',
+          'electron',
+          'tauri-dark',
+        ],
+        'vscode-icons': ['file-type-cypress'],
+        'logos': ['strapi-icon', 'oauth'],
         'flat-color-icons': [
           'template',
           'gallery',

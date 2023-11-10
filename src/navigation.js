@@ -15,12 +15,12 @@ export const headerData = {
       href: getPermalink('/#case-studies'),
     },
     {
-      text: 'Contact',
-      href: getPermalink('/contact'),
-    },
-    {
       text: 'Blog',
       href: getBlogPermalink()
+    },
+    {
+      text: 'Contact',
+      href: getPermalink('/contact'),
     },
   ],
   actions: [{ text: 'Work With Us', href: '/contact', variant: 'primary' }],
