@@ -73,7 +73,9 @@ npm install @tauri-apps/cli
 npx tauri init
 ```
 
-Ensure you are in the root directory of your React project.
+Ensure you are in the root directory of your React project and follow the instructions in the terminal.
+
+![result of npx tauri init](~/assets/images/blog/tauri-react-vite-typescript-starter/npx-tauri-init.png)
 
 ### Step 5: Configure Vite to Use Port 3000
 Modify Vite's configuration to use port 3000. In the `vite.config.ts` file:
@@ -91,24 +93,7 @@ export default defineConfig({
 });
 ```
 
-### Step 6: Develop Your React Component
-Edit the `src/App.tsx` file to create a simple React component using TypeScript:
-
-```tsx
-import React from 'react';
-
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <h1>Welcome to Innotek's React-Tauri App</h1>
-    </div>
-  );
-};
-
-export default App;
-```
-
-### Step 7: Run the Development Server
+### Step 6: Run the Development Server
 To check your React app, start Vite's development server:
 
 ```bash
@@ -117,7 +102,9 @@ npm run dev
 
 Your app will be available at `http://localhost:3000`.
 
-### Step 8: Configure Tauri Settings
+![result of npm run dev](~/assets/images/blog/tauri-react-vite-typescript-starter/dev-app-running.png)
+
+### Step 7: Configure Tauri Settings
 Before building and packaging the app, adjust Tauri's settings to suit our project's structure:
 
 1. **Set a Unique Bundle Identifier:**
@@ -141,13 +128,17 @@ Before building and packaging the app, adjust Tauri's settings to suit our proje
    },
    ```
 
-### Step 9: Integrate React with Tauri
+### Step 8: Launch the app with Tauri
 Compile your React app and launch it within a Tauri window:
 
 ```bash
 npm run build
 npx tauri dev
 ```
+
+You'll see Vite's default App component but now inside a native window! Hot Module Reload also works here so any change you make to App.tsx will be immediately reflected in the Tauri window.
+
+![result of npx tauri dev](~/assets/images/blog/tauri-react-vite-typescript-starter/npx-tauri-dev.gif)
 
 ### Step 10: Package Your Application
 Finally, package your application into a distributable format:
@@ -169,8 +160,10 @@ We hope this tutorial sets you up for success in your desktop app development jo
 Here are some resources for a deeper dive:
 
 [React Documentation](https://reactjs.org/docs/getting-started.html)
+
 [Tauri Documentation](https://tauri.app/v1/guides/)
+
 [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 
 ### Feedback and Questions:
-We'd love to hear your thoughts on this tutorial. Reach out with questions or feedback at [Your Company's Support Email/Forum].
+We'd love to hear your thoughts on this tutorial. Reach out with questions or feedback at info@innotek.hu.
