@@ -64,6 +64,9 @@ export interface AnalyticsConfig {
       id?: string;
       partytown?: boolean;
     };
+    amplitude: {
+      id?: string;
+    };
   };
 }
 
@@ -189,6 +192,9 @@ const getAnalytics = () => {
       googleAnalytics: {
         id: undefined,
         partytown: true,
+      },
+      amplitude: {
+        id: '6790880dca317d810bcfd908cea45165',
       },
     },
   };

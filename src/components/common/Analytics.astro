@@ -1,10 +1,17 @@
 ---
 import { GoogleAnalytics } from '@astrolib/analytics';
 import { ANALYTICS } from '~/utils/config';
+import AmplitudeAnalytics from './AmplitudeAnalytics.astro';
 ---
 
 {
   ANALYTICS?.vendors?.googleAnalytics?.id ? (
     <GoogleAnalytics id={String(ANALYTICS.vendors.googleAnalytics.id)} partytown={ANALYTICS?.vendors?.googleAnalytics?.partytown} />
+  ) : null
+}
+
+{
+  ANALYTICS?.vendors?.amplitude?.id ? (
+    <AmplitudeAnalytics id={String(ANALYTICS.vendors.amplitude.id)} />
   ) : null
 }

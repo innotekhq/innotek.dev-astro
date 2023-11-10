@@ -1,6 +1,6 @@
 site:
   name: Innotek
-  site: 'https://clever-tapioca-642c60.netlify.app/'
+  site: 'https://innotek.dev/'
   base: '/'
   trailingSlash: false
 
