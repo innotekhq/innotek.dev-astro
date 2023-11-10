@@ -42,18 +42,15 @@ export default defineConfig({
         tabler: ['*'],
         'skill-icons': [
           'react-dark',
-          'nextjs-dark',
           'typescript',
           'postgresql-dark',
           'electron',
-          'tauri-dark',
           'graphql-dark',
-          'apollo',
-          'autodesk'
+          'autodesk',
+          'docker'
         ],
         'simple-icons': ['autodesk'],
         'vscode-icons': ['file-type-cypress'],
-        'logos': ['strapi-icon', 'oauth'],
         'flat-color-icons': [
           'template',
           'gallery',
