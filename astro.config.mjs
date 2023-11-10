@@ -47,7 +47,11 @@ export default defineConfig({
           'postgresql-dark',
           'electron',
           'tauri-dark',
+          'graphql-dark',
+          'apollo',
+          'autodesk'
         ],
+        'simple-icons': ['autodesk'],
         'vscode-icons': ['file-type-cypress'],
         'logos': ['strapi-icon', 'oauth'],
         'flat-color-icons': [
