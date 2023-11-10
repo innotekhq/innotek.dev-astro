@@ -11,6 +11,8 @@ import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import LatestProjects from '~/components/widgets/LatestProjects.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
+import { getPermalink } from '~/utils/permalinks';
+
 const metadata = {
   title: 'Web, Desktop and Browser plugin development Agency - Innotek',
   ignoreTitleTemplate: true,
@@ -31,7 +33,7 @@ const metadata = {
         icon: 'tabler:rocket',
       },
     ]}
-    image={{ src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', alt: 'AstroWind Hero Image' }}
+    image={{ src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', alt: 'Innotek Hero Image' }}
   >
     <Fragment slot="title">
       Web<span class="hidden sm:inline">, Desktop</span> apps <span class="hidden sm:inline">and Browser Plugins</span> for <span class="text-accent dark:text-white highlight">Your Business</span>
@@ -91,11 +93,15 @@ const metadata = {
     isReversed
     tagline="Expertise"
     title="Here’s what we do best"
+    callToAction={{
+      text: 'Case Study',
+      href: getPermalink('/saas-application-development-autodesk'),
+    }}
     items={[
       {
         title: 'Built-in user Authentication and user Authentication',
         description:
-          'Choose between self-hosted or cloud-hosted user authentication and authorization services, ensuring your users’ data is secure and protected. We help you set up, implement, and manage these services, so you can focus on what matters most. We know there are plenty of tools to do this, and we can help you choose the right one for your needs.',
+          'Choose between self-hosted or cloud-hosted user authentication and authorization services, ensuring your users’ data is secure and protected. We help you choose the right tool, set up, implement, and manage these services, so you can focus on what matters most.',
       },
       {
         title: '3rd Party API integration',
@@ -126,6 +132,10 @@ const metadata = {
 
   <Content
     isAfterContent
+    callToAction={{
+      text: 'Case Study',
+      href: getPermalink('/electron-desktop-application'),
+    }}
     items={[
       {
         title: 'OAuth integration',
@@ -149,7 +159,6 @@ const metadata = {
   >
     <Fragment slot="content">
       <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Desktop Apps</h3>
-      Built an app from scratch or connect it to your SaaS. We can help you with both.
     </Fragment>
 
     <Fragment slot="bg">
@@ -162,6 +171,10 @@ const metadata = {
   <Content
     isReversed
     isAfterContent
+    callToAction={{
+      text: 'Case Study',
+      href: getPermalink('/browser-plugin-development'),
+    }}
     items={[
       {
         title: 'Enhanced user engagement',
@@ -185,7 +198,6 @@ const metadata = {
   >
     <Fragment slot="content">
       <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Browser Extensions</h3>
-      Empower your users browsing experience
     </Fragment>
 
     <Fragment slot="bg">

@@ -24,6 +24,7 @@ const metadata = merge(
   {
     title: post.title,
     description: post.excerpt,
+    category: post.category,
     robots: {
       index: blogPostRobots?.index,
       follow: blogPostRobots?.follow,
@@ -39,5 +40,5 @@ const metadata = merge(
 
 <Layout metadata={metadata}>
   <SinglePost post={{ ...post, image: image }} url={url} />
-  <ToBlogLink />
+  <ToBlogLink category={post.category}/>
 </Layout>
