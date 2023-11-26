@@ -4,7 +4,6 @@ title: "Integrating Next.js and OpenAI for a Dynamic Web Application"
 excerpt: "In the realm of web development, integrating diverse technologies to create seamless and efficient applications is key. This blog post will guide you through setting up a Next.js application that sends prompts to OpenAI's GPT-3 API."
 image: ~/assets/images/blog/nextjs-openai/hero.webp
 category: Blog
-draft: true
 tags:
   - typescript
   - autodesk
@@ -17,7 +16,7 @@ import ToggleTheme from '~/components/common/ToggleTheme.astro';
 
 ## Introduction
 
-In this post we'll focus on creating a user interface with a single text input where users can submit prompts to OpenAI. For brevity, we'll assume you've already set up Node.js and will start directly from npm installations.
+In this post, we'll create a user interface with a single text input where users can submit prompts to OpenAI. For brevity, we'll assume you've already set up Node.js and will start directly from npm installations.
 
 ## Starting with Next.js and TypeScript
 
@@ -28,26 +27,26 @@ First, let's set up our Next.js application with TypeScript support. Ensure you 
 ```bash
 npx create-next-app@latest nextjs-openai --ts --eslint --tailwind --app
 ```
-Replace nextjs-openai with your preferred project name. When asked if you want to use the src/ directory, select No.
-The above command automatically sets up TypeScript, ESLint and TailwindCSS for your project, including generating a tsconfig.json file. Verify its presence in your project directory.
+Replace `nextjs-openai` with your preferred project name. Select No when asked if you want to use the src/ directory since we'll use the app/ directory instead.
+The above command automatically sets up TypeScript, ESLint, and TailwindCSS for your project, including generating a tsconfig.json file. Verify its presence in your project directory.
 
 2. **Set the OpenAI API Key**
 
-To make calls to OpenAI's API, you'll need to set your API key as an environment variable. You can obtain your API key from the [OpenAI dashboard](https://platform.openai.com/api-keys).
+To make calls to OpenAI's API, you must set your API key as an environment variable. You can obtain your API key from the [OpenAI dashboard](https://platform.openai.com/api-keys).
 
-Once you have this, change into your project directory:
+Once you have this, change the current directory to your project directory:
 
 ```bash
 cd nextjs-openai
 ```
 
-Create a .env file with the following contents:
+Then, create a `.env` file with the following contents:
 
 ```
 OPENAI_API_KEY=<your open ai key>
 ```
 
-And finally install the OpenAI SDK:
+And finally, install the OpenAI SDK:
 
 ```bash
 npm i openai
@@ -55,12 +54,12 @@ npm i openai
 
 ## Implementing a REST API in Next.js
 
-Next.js App Router allows us to easily implement API routes, which we will use to interact with OpenAI's API.
+Next.js App Router allows us to implement API routes, which we will use to interact with OpenAI's API.
 
 1. **Create an API Route:**
 
- - Create a file under `app/api/send-prompt/`, such as `route.ts`.
- - This file will export an async function named POST that handles the requests. The naming is important, as Next.js will automatically route `POST /api/send-prompt` request to this function.
+ - Create a file named `route.ts` under `app/api/send-prompt/`.
+ - This file will export an async function named POST that handles the requests. The naming is essential, as Next.js will automatically route `POST /api/send-prompt` requests to this function.
 
 2. **Implementing the API Endpoint** (`app/api/send-prompt/route.ts`):
 
@@ -82,23 +81,27 @@ export async function POST(req: Request) {
     };
     const chatCompletion: OpenAI.Chat.ChatCompletion =
       await openai.chat.completions.create(params);
-    console.log(chatCompletion);
     const response = {
       response: chatCompletion?.choices[0].message.content?.trim(),
     };
     return NextResponse.json(response);
   } catch (error) {
-    console.log(error);
     return NextResponse.error();
   }
 }
 ```
 
+The above code consists of three core steps:
+
+ - **Constructing the request to OpenAI**: The request consists of the prompt entered by the user and the model to use. In this case, we use the `gpt-3.5-turbo` model, a fast and efficient version of the GPT-3 model.
+ - **Creating a chat completion**: We use the OpenAI SDK to start a chat completion using `params` we created.
+ - **Handling the response**: The previous step returns a `ChatCompletion` object, which we use to extract the response and return its contents to the user.
+
 ## Building the UI
 
 Let's create a simple UI that consists of a text input and a submit button to send prompts to our backend.
 
-1. **Main Page** In app/page.tsx, create a form with a text input and a button. Use TailwindCSS for styling:
+1. **Main Page** In `app/page.tsx`, create a form with a text input and a button. Use TailwindCSS for styling:
 
 ```tsx
 "use client"
@@ -143,11 +146,11 @@ export default function Home() {
 }
 ```
 
-This code creates a form with a textarea for the prompt and a button to submit it. It also includes a section to display the response from the backend.
+This code creates a form with a `textarea` for the prompt and a `button` to submit it. It also includes a section to display the response from the backend.
 
 2. **Implementing the API Call**
 
-In the handleSubmit function, use the fetch API to send the prompt to your REST API endpoint and handle the response:
+In the `handleSubmit` function, use the fetch API to send the prompt to the REST API endpoint and handle the response:
 
 ```tsx
   const handleSubmit = async (e) => {
@@ -168,18 +171,17 @@ In the handleSubmit function, use the fetch API to send the prompt to your REST 
         throw new Error('Network response was not ok.');
       }
     } catch (error) {
-      console.error('Fetch error:', error);
       setResponse('Failed to fetch response.');
     }
     setIsLoading(false);
   };
 ```
 
-This function sends the user's prompt to the `/api/send-prompt`` endpoint, waits for the response, and then updates the state to display it.
+This function sends the user's prompt to the `/api/send-prompt` endpoint, waits for the response, and then updates the state to display it.
 
 ## Interacting with OpenAI
 
-Finally run the app and test it out:
+Finally, run the app and test it out:
 
 ```bash
 npm run dev
@@ -191,7 +193,7 @@ The app should be running on http://localhost:3000.
 
 ## Conclusion
 
-This tutorial truly shows the amazing work that the OpenAI team has done. Interaction with GTP models is now as easy as sending a POST request to a REST API endpoint.
+This tutorial shows the fantastic work that the OpenAI team has done. Interaction with GTP models is now as easy as sending a POST request to a REST API endpoint.
 
 But it's your turn now! What will you build with this new power?
 
