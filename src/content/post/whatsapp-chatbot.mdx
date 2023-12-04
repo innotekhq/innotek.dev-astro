@@ -1,0 +1,477 @@
+---
+publishDate: 2023-12-04T00:00:00Z
+title: 'Integrating ChatGPT into your Whatsapp with a Custom Knowledge Base'
+excerpt: 'In the world of AI, ChatGPT has become a part of our everyday life, used for tasks ranging from writing a to-do list to building conversational chatbots. This blog post will guide you on how to integrate a chatbot into your WhatsApp using Twilio and provide it with a knowledge base to answer your queries.'
+image: ~/assets/images/blog/whatsapp-chatbot/hero.webp
+category: Blog
+tags:
+  - nodejs
+  - twilio
+  - express
+  - whatsapp
+---
+
+import DListItem from '~/components/ui/DListItem.astro';
+import ToggleTheme from '~/components/common/ToggleTheme.astro';
+
+## Introduction
+
+In this post, we assume that you have already installed Node v18 on your machine and has some experience with Supabase and Postgres. Additionally, make sure you have a free Twilio account set up (if you don't have one yet). We will be developing a WhatsApp chatbot using the [OpenAI Chat Completions](https://platform.openai.com/docs/guides/text-generation/chat-completions-api) API endpoint. Users can ask questions, and the chatbot will generate responses based on the information provided through a vector database. It will also ensure to refrain from answering questions when they are asked out of context from its knowledge base, opting instead to reply with a polite sorry message.
+
+## Setting up your Local Environment
+
+First, set up your Node.js application. Make sure you understand how to create an Express server before you proceed.
+
+1. **Install dependencies**: In your project terminal start by executing the following command to install the necessary packages:
+
+```bash
+npm init -y && npm i @supabase/supabase-js twilio express dotenv openai langchain
+```
+
+After executing this command, you'll find a node project dependency tree in the root of your project, complete with a package.json file containing the specified dependencies.
+
+2. **Add Environment variables**
+
+Create a .env file with the following contents. which will be used to authenticate REST API requests.
+
+```
+TWILIO_ACCOUNT_SID= <your twilio account sid>
+TWILIO_AUTH_TOKEN= <your twilio auth token>
+
+OPENAI_API_KEY= <your open ai key>
+
+SUPABASE_URL= <your supabase url>
+SUPABASE_API_KEY= <your supabase api key>
+```
+
+Here is a breakdown on how to get these credentials:
+
+- **Obtaining Twilio Credentials:**
+
+1. Log in to your [Twilio account](https://www.twilio.com/login).
+2. Navigate to the [Twilio Auth Token](https://console.twilio.com/) page.
+3. Copy and paste the credentials into the `.env` file.
+
+- **Obtaining OpenAI API Key:**
+
+1. Log in to your [OpenAI account](https://openai.com/).
+2. Head to the [OpenAI dashboard](https://platform.openai.com/api-keys).
+3. Copy and paste the OpenAI API key into the `.env` file.
+
+- **Obtaining Supabase Credentials:**
+
+1. Create a [Supabase project](https://database.new/).
+2. Go to the [API settings page](https://supabase.com/dashboard/project/_/settings/api).
+3. Copy and paste the Supabase API URL and API key into the `.env` file.
+
+## Configuring OpenAI and Supabase
+
+In the root of your project, create a file called `utils.js`. This is where we'll configure our OpenAI and Supabase client.
+
+```javascript
+require('dotenv').config(); // loads .env variables
+
+const OpenAI = require('openai');
+const { createClient } = require('@supabase/supabase-js');
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_API_KEY);
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+module.exports = { openai, supabase };
+```
+
+The above code consists of 2 core steps:
+
+- **Supabase Initialization**: Sets up a connection to Supabase.This initialized supabase client allows interaction with the Supabase database in the application.
+- **OpenAI Instance**: Initializes the OpenAI API client., which is crucial for making requests to the OpenAI API, enabling the application to perform NLP tasks.
+
+## Setting Up Express Server
+
+Create another file on your project root called `server.js`.
+
+```javascript
+const express = require('express');
+const { openai, supabase } = require('./utils');
+
+const app = express();
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
+
+app.post('/incoming', async (req, res) => {
+  const message = req.body;
+
+  const twiml = new MessagingResponse();
+  // We'll create a function to reply for the incoming message here later
+  const aiReply = await reply(message.Body);
+
+  twiml.message(aiReply);
+  res.status(200).type('text/xml');
+  res.end(twiml.toString());
+});
+
+app.listen(3000, () => {
+  console.log('Express server listening on port 3000');
+});
+```
+
+The above code consists of 4 core steps:
+
+- **Importing Twilio helper package**: we are using the `MessagingResponse` constructor to create an instance of a [TwiML (Twilio Markup Language) response](https://www.twilio.com/docs/voice/twiml).
+- **Initializing Express App**: We're creating a web server using Express to listen for POST requests to `/incoming` route. This route will act as our [Twilio WhatsApp webhook](https://www.twilio.com/docs/usage/webhooks/getting-started-twilio-webhooks) to receive incoming messages.
+- **Incoming Request**: The incoming request body has a property called `Body`, which will contain the text message the user sent via WhatsApp to the Twilio server. This message will then be forwarded to our web server.
+- **Webhook Response**: Finally, our web server will respond with a reply generated using OpenAI.
+
+## Writing the Reply Function
+
+Let's create the `reply` function in the `server.js` file so that we can transmit the incoming message to the **OpenAI Chat Completions endpoint**.
+
+```javascript
+const chatMessages = [
+  {
+    role: 'system',
+    content: 'reply to the messages you get in 100 character',
+  },
+];
+
+async function reply(msg) {
+  chatMessages.push({
+    role: 'user',
+    content: msg,
+  });
+  const response = await openai.chat.completions.create({
+    messages: chatMessages,
+    model: 'gpt-3.5-turbo',
+    max_tokens: 300,
+    temperature: 0.5,
+    frequency_penalty: 0.5,
+  });
+  return response.choices[0].message.content;
+}
+```
+
+We call this function inside our web server, as you saw earlier. The `req.body.Body` argument is passed to the reply function as the `msg` parameter. Then, we respond to it using the **OpenAI Chat Completions** endpoint.
+
+Now, our web server will look like:
+
+```javascript
+const express = require('express');
+const { openai, supabase } = require('./utils');
+
+const app = express();
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
+
+app.post('/incoming', async (req, res) => {
+  const message = req.body;
+
+  const twiml = new MessagingResponse();
+  const aiReply = await reply(message.Body);
+
+  twiml.message(aiReply);
+  res.status(200).type('text/xml');
+  res.end(twiml.toString());
+});
+
+app.listen(3000, () => {
+  console.log('Express server listening on port 3000');
+});
+
+const chatMessages = [
+  {
+    role: 'system',
+    content: 'reply to the messages you get in 100 characters',
+  },
+];
+
+async function reply(msg) {
+  chatMessages.push({
+    role: 'user',
+    content: msg,
+  });
+  const response = await openai.chat.completions.create({
+    messages: chatMessages,
+    model: 'gpt-3.5-turbo',
+    max_tokens: 300,
+    temperature: 0.5,
+    frequency_penalty: 0.5,
+  });
+  return response.choices[0].message.content;
+}
+```
+
+Now, return to your terminal and execute the following command:
+
+```bash
+node server.js
+```
+
+If you have configured everything correctly, as we mentioned. You will see this message printed on the console.
+
+```
+Express server listening on port 3000
+```
+
+But there is a problem. Your web server is currently running locally on your computer. As a result, Twilio will not be able to access our webhook endpoint.
+
+This is where we need to use **Ngrok** to expose our local server to the internet. If you haven't used it before, [Twilio has already provided instructions on how to install and configure it on your machine](https://www.twilio.com/docs/usage/tutorials/how-to-set-up-your-node-js-and-express-development-environment). Once it's done (assuming the local server is still running), open another terminal in the same path and execute:
+
+```bash
+ngrok http 3000
+```
+
+This will expose our server to the internet. From the terminal, you can copy the forwarding URL with HTTPS and paste it into [Twilio WhatsApp Sandbox settings](https://console.twilio.com/us1/develop/sms/try-it-out/whatsapp-learn). Don't forget to add the `/incoming` route at the end and set the method to POST, then click Save.
+
+![Twilio whatsapp sandbox settings](~/assets/images/blog/whatsapp-chatbot/sandbox-settings.webp)
+
+Now, go back to the Twilio Whatsapp Sandbox tab and scan the QR code.
+
+![Twilio whatsapp sandbox](~/assets/images/blog/whatsapp-chatbot/sandbox.webp)
+
+From your WhatsApp, now you can chat with our AI just as you would normally with ChatGPT.
+
+![Twilio whatsapp chat demo v1](~/assets/images/blog/whatsapp-chatbot/chatbot-demo-v1.gif)
+
+## Adding Knowledge base
+
+A big challenge of working with embeddings is that traditional relational databases like MySQL or PostgreSQL cannot handle the complexity and scale of all that data. Therefore, AI engineers need a specialized storage system to efficiently handle high-dimensional vectors, and that's where vector databases come in.
+
+Now, let's create a table to store the vectors. Copy and paste the following code into your SQL editor (this editor allows you to write and run SQL queries and scripts on your database), and then execute it.
+
+```sql
+create extension vector;
+
+create table movies (
+  id bigserial primary key,
+  content text, -- corresponds to the "text chunk"
+  embedding vector(1536) -- 1536 works for OpenAI embeddings
+);
+
+-- Function to find similar movies based on cosine distance with adjustable threshold and count.
+create or replace function match_movies (
+  query_embedding vector(1536),
+  match_threshold float,
+  match_count int
+)
+returns table (
+  id bigint,
+  content text,
+  similarity float
+)
+language sql stable
+as $$
+  select
+    movies.id,
+    movies.content,
+    1 - (movies.embedding <=> query_embedding) as similarity
+  from movies
+  where movies.embedding <=> query_embedding < 1 - match_threshold
+  order by movies.embedding <=> query_embedding
+  limit match_count;
+$$;
+```
+
+You don't need to feel overwhelmed by this SQL query. it's already available in the [Supabase docs](https://supabase.com/docs/guides/ai/vector-columns). We have simply optimized the naming for movies.
+
+The above code consists of 3 core steps:
+
+- **Enabling pgvector**: Initially, we activate the pgvector extension for our PostgreSQL database to enable the use of the vector type for our embedding column.
+- **Similarity Search**: The `match_movies` function, which we will utilize later, checks the similarity of vector embeddings between the user query and the vector embeddings in the database.
+- **Cosine Similarity**: Recommended by [OpenAI for their model text-embedding-ada-002](https://platform.openai.com/docs/guides/embeddings). The model has 1536 dimensions for each text.
+
+![supabase sql editor](~/assets/images/blog/whatsapp-chatbot/sql-editor.gif)
+
+If everything runs successfully, you will see **Success: No rows returned in the result.**
+
+Now, it's time to store some vector embeddings in the database.
+
+## Adding Vector Embeddings
+
+Amazon recommends products, Google shows results based on your queries, YouTube, Netflix, and Spotify recommend your favorites. They don't understand the context between two titles or products, even if they mean the same thing. They truly get us with the help of AI.
+
+To be exact, with the help of embeddings. When an embedding is created for a word, the vectors preserve its original meaning and the relationship between other words and phrases.
+
+It is just a numerical snapshot of data. A word, sentence, or an entire document can be reduced to a vector. Now as developers, it might be easier to think of a vector as an array of floating-point numbers.
+
+Let's create a new file in the root called `data.js`. This is where we are going to add the data for our chatbot to Supabase Vector DB.
+
+```javascript
+// data.js
+const movies = `Welcome to Redville: 2023 | 1h 30m | 4.8 rating | Genre: Crime, Drama, Mystery & thriller......`;
+
+const { supabase } = require('./utils');
+const { RecursiveCharacterTextSplitter } = require('langchain/text_splitter');
+const { createEmbedding } = require('./utils');
+
+async function splitDocuments(content) {
+  const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 200,
+    chunkOverlap: 10,
+  });
+
+  const output = await splitter.createDocuments([content]);
+
+  const data = await Promise.all(
+    output.map(async ({ pageContent }) => ({
+      content: pageContent,
+      embedding: await createEmbedding(pageContent),
+    }))
+  );
+
+  await supabase.from('movies').insert(data);
+}
+
+splitDocuments(movies);
+```
+
+The above code consists of 3 core steps:
+
+- **Knowledge base**: We have generated some content for you, which includes movies where AI models like chatGPT have no prior knowledge. [You can find this content in this GitHub repository](https://github.com/sojinsamuel/whatsapp-chatbot/blob/master/movies.txt). Simply copy and assign it to the movies variable inside backticks.
+- **Add Content**: To insert content and embeddings into Supabase, you can use the Supabase insert method. The data array is passed to the insert method, sending all the data to Supabase in a single batch. When adding the data, ensure that the data properties match the column names in the movies table.
+- **Split Text into Chunks**: When creating embeddings from large text documents, it's beneficial to first break the text into smaller chunks. This ensures that the AI model can effectively capture and understand the context to providing more accurate results. That's why we are using the [RecursiveCharacterTextSplitter](https://js.langchain.com/docs/modules/data_connection/document_transformers/text_splitters/recursive_text_splitter) from Langchain.
+
+And `createEmbedding` is a new utility function in our `utils.js`:
+
+```javascript
+async function createEmbedding(input) {
+  const response = await openai.embeddings.create({
+    model: 'text-embedding-ada-002',
+    input,
+    encoding_format: 'float',
+  });
+  return response.data[0].embedding;
+}
+
+module.exports = { openai, supabase, createEmbedding };
+```
+
+This is how you call the OpenAI's embedding model `text-embedding-ada-002`, that generates text embeddings.
+
+- **Required Props**: The `model` and `input` are required properties in the request body. And if you want to include multiple inputs in a single request you can pass an array on strings.
+
+- **Similarity Check**: This embedding model is well-trained to understand language. It can embed words and phrases with similar meanings into a similar vector space and the ones that are not alike into a different vector space.
+
+Now, open your terminal and execute:
+
+```bash
+node data.js
+```
+
+This will store our movie data in our vector database as text chunks, and each chunk will point to a vector embedding of 1536 dimensions.
+
+![add vectors to database](~/assets/images/blog/whatsapp-chatbot/save-to-db.gif)
+
+Next, we need to compare the embedding created from the text message you sent with the vectors in our database to find a similar match and retrieve the corresponding text.
+
+This is where our special function comes into play. We will be utilizing an algorithm to measure the similarity between two vectors, known as cosine similarity. Supabase, with the pg vector extension makes the comparison and processing of vectors easy and fast with the `match_movies` SQL function we saw earlier.
+
+```javascript
+const { data: movies } = await supabaseClient.rpc('match_movies', {
+  query_embedding: embedding, // Embedding you want to compare
+  match_threshold: 0.78, // min threshold (78%)
+  match_count: 1, // limit no of matches
+});
+```
+
+So, let's make some changes to our server.js file:
+
+```javascript
+const express = require('express');
+const { openai, createEmbedding, supabase } = require('./utils');
+
+const chatMessages = [
+  {
+    role: 'system',
+    content: `You are an enthusiastic movie expert who loves recommending movies to people. You will be given two pieces of information - some context about movies and a question. Your main job is to formulate a short answer to the question using the provided context. If you are unsure and cannot find the answer in the context, say, "Sorry, I don't know the answer." Please do not make up the answer.`,
+  },
+];
+
+async function findNearestMatch(query_embedding) {
+  const { data: movies } = await supabase.rpc('match_movies', {
+    query_embedding,
+    match_threshold: 0.78,
+    match_count: 1,
+  });
+
+  // No match returns []
+  return movies.length > 0 && movies;
+}
+
+async function reply(msg) {
+  const embedding = await createEmbedding(msg);
+  const movies = await findNearestMatch(embedding);
+
+  if (!movies) return 'No match found. Please try again.';
+
+  chatMessages.push({
+    role: 'user',
+    content: `Context: ${movies[0].content} Question: ${msg}`,
+  });
+
+  const response = await openai.chat.completions.create({
+    messages: chatMessages,
+    model: 'gpt-3.5-turbo',
+    max_tokens: 300,
+    temperature: 0.5,
+    frequency_penalty: 0.5,
+  });
+  return response.choices[0].message.content;
+}
+
+const app = express();
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
+
+app.post('/incoming', async (req, res) => {
+  const message = req.body;
+
+  const twiml = new MessagingResponse();
+  const aiReply = await reply(message.Body);
+
+  twiml.message(aiReply);
+
+  res.status(200).type('text/xml');
+  res.end(twiml.toString());
+});
+
+app.listen(3000, () => {
+  console.log('Express server listening on port 3000');
+});
+```
+
+The above code consists of 2 core steps:
+
+- **Execute match_movies function**: The function named findNearestMatch searches through our supabase database to locate the closest matching text chunk based on the provided embedding.
+- **Add ChatGPT Wrapper**: We can achieve more dynamic and conversational response by sending the matched text to OpenAI’s chat completion endpoint and instructing the model to formulate a specific answer.
+
+Now, if you haven't stopped the server, restart it. Each time Ngrok will give you a new forwarding URL, so make sure you update the webhook URL in the WhatsApp sandbox settings with your new one. Don't forget to add the `/incoming` route at the end.
+
+Now, let's have a chat with the final version of our WhatsApp chatbot:
+
+![whatsapp chatbot with knowledge base](~/assets/images/blog/whatsapp-chatbot/chatbot-demo-v2.gif)
+
+## Conclusion
+
+This tutorial demonstrates the many possibilities of using OpenAI to automate various tasks. Instead of just having a textual conversation, we could also add a feature to input commands like "/img {prompt}" for image generation or a piece of text to convert it into speech. The possibilities are endless.
+
+What would you like to add next to this Whatsapp chatbot?
